@@ -3,8 +3,10 @@
 namespace MatGaming;
 
 
-use MatGaming\Commands\TPACommand;
-use MatGaming\Utils\CommandsManager;
+use MatGaming\Commands\TpAcceptCommand;
+use MatGaming\Commands\TpaCommand;
+use MatGaming\Utils\MessageManager;
+use MatGaming\Utils\TeleportManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
@@ -26,14 +28,20 @@ class BlackCommands extends PluginBase
     private Config $lang;
 
     /**
-     * @var CommandsManager
+     * @var MessageManager
      */
-    private CommandsManager $commandsManager;
+    private MessageManager $messageManager;
+
+    /**
+     * @var TeleportManager
+     */
+    private TeleportManager $teleportManager;
 
     public function onEnable()
     {
         self::$instance = $this;
-        $this->commandsManager = new CommandsManager($this);
+        $this->messageManager = new MessageManager($this);
+        $this->teleportManager = new TeleportManager($this);
         $this->registerCommands();
         $this->initConfig();
     }
@@ -43,16 +51,22 @@ class BlackCommands extends PluginBase
         return self::$instance;
     }
 
-    public function getCommandsManager() : CommandsManager
+    public function getMessageManager() : MessageManager
     {
-        return $this->commandsManager;
+        return $this->messageManager;
+    }
+
+    public function getTeleportManager(): TeleportManager
+    {
+        return $this->teleportManager;
     }
 
     private function registerCommands() : void
     {
         $commandMap = $this->getServer()->getCommandMap();
         $commandMap->registerAll("BlackCommands", [
-            new TPACommand($this)
+            new TpaCommand($this),
+            new TpAcceptCommand($this)
         ]);
     }
 
@@ -64,7 +78,6 @@ class BlackCommands extends PluginBase
         $this->saveResource("lang/lang_en.json");
         $this->setting = new Config($dataFolder."config.yml", Config::YAML);
         $this->lang = new Config($dataFolder."lang/lang-".$this->setting->get("lang").".json", Config::JSON);
-
     }
 
     public function getConfigSetting() : Config

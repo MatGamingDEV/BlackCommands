@@ -6,7 +6,7 @@ namespace MatGaming\Utils;
 
 use MatGaming\BlackCommands;
 
-class CommandsManager
+class MessageManager
 {
     /**
      * @var BlackCommands
@@ -47,6 +47,16 @@ class CommandsManager
         $permMessage = $this->id[$IdCommand] ?? "§4Permission Message $IdCommand not found in the lang file";
         $permMessage = $this->prefix + $permMessage;
         return $permMessage;
+    }
+
+    public function getMessage(string $IdMessage, array $args = []) : string
+    {
+        $Message = $this->id[$IdMessage] ?? "§4Message $IdMessage not found in the lang file";
+        foreach ($args as $arg => $value){
+            $Message = str_replace("{".$arg."}", $value, $Message);
+        }
+        $Message = $this->prefix + $Message;
+        return $Message;
     }
 
 }

@@ -4,7 +4,7 @@
 namespace MatGaming\Commands;
 
 
-class TPAHERECommand
+class TpDenyCommand
 {
 
 }

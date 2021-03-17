@@ -23,4 +23,9 @@ lang: "en"
 # Prefix for messages, forms and other
 # If you won't prefix, just make "".
 prefix: "§eBlackCommands >>§r"
+
+Teleport:
+  max-time-reply: "30"
+  immunise-after-teleportation: true
+  god-time: 10
 ...
